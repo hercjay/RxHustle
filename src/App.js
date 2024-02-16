@@ -1,8 +1,7 @@
-import logo from './logo.svg';
 import './App.css';
 
 
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './components/common/Navbar';
 import Home from './pages/Home';
 import About from './pages/About';
@@ -19,7 +18,7 @@ const App = () => {
     <Router>
       <div>
         <Navbar />
-        <Switch>
+        <Routes>
           <Route exact path="/" component={Home} />
           <Route path="/about" component={About} />
           <Route path="/find-shifts" component={FindShifts} />
@@ -27,7 +26,7 @@ const App = () => {
           <Route path="/user-profile" component={UserProfile} />
           <Route path="/account-settings" component={AccountSettings} />
           <Route path="/logout" component={Logout} />
-        </Switch>
+        </Routes>
       </div>
     </Router>
   );
