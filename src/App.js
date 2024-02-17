@@ -10,13 +10,15 @@ import PostShifts from './pages/PostShifts';
 import UserProfile from './pages/UserProfile';
 import AccountSettings from './pages/AccountSettings';
 import Logout from './pages/Logout';
+import ScrollToTop from './components/common/ScrollToTop';
 
 
 
 const App = () => {
   return (
     <Router>
-      <div>
+      <ScrollToTop />
+      <div className='pb-20 bg-slate-100'>
         <Navbar />
         <Routes>
           <Route exact path="/" element={<Home />} />
