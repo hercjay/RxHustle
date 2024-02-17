@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import * as Icons from 'react-bootstrap-icons';
+import { List as ListIcon, X as XIcon} from 'react-bootstrap-icons';
 
 
 
@@ -33,7 +33,7 @@ const Navbar = () => {
         </Link>
         
         <div onClick={()=>setOpen(!open)} className='text-3xl absolute right-8 top-5 cursor-pointer md:hidden'>
-        {open ? <Icons.X /> : <Icons.List />}
+        {open ? <XIcon /> : <ListIcon />}
         </div>
 
         <ul className={`md:flex md:items-center md:pb-0 pb-2 absolute md:static bg-sky-100  md:z-auto z-[-1] left-0 w-full md:w-auto md:pl-0 pl-9 transition-all duration-500 ease-in ${open ? 'top-14 ':'top-[-490px]'}`}>
