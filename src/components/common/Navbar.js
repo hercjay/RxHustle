@@ -1,33 +1,52 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import * as Icons from 'react-bootstrap-icons';
+
+
+
 
 const Navbar = () => {
+
+    let links = [
+        { name: 'Home', url: '/' },
+        { name: 'About', url: '/about' },
+        { name: 'Find Shifts', url: '/find-shifts' },
+        { name: 'Post Shifts', url: '/post-shifts' },
+        { name: 'Account Settings', url: '/account-settings' },
+        {name: 'Services', url: '/services' },
+        { name: 'Logout', url: '/logout' },
+    ];
+
+    let [open,setOpen]=useState(false);
+
   return (
-    <nav className="bg-gray-800 p-4">
-      <div className="container mx-auto flex justify-between items-center">
-        <div>
-          <Link to="/" className="text-white font-bold text-xl">RxHustle</Link>
+    <nav className="shadow-md w-full sticky top-0 left-0">
+    
+      <div className='md:flex items-center justify-between bg-teal-50 py-4 md:px-10 px-7'>
+        <div className='font-bold text-2xl cursor-pointer flex items-center font-[Titillium Web] 
+        text-gray-800'>
+            <span className='text-3xl mr-1 pt-2'>
+            {/* <ion-icon name="logo-ionic"></ion-icon> */}
+            </span>
+            RxHustle
         </div>
-        <ul className="flex space-x-4">
-          <li><Link to="/" className="text-white">Home</Link></li>
-          <li><Link to="/about" className="text-white">About</Link></li>
-          <li className="relative">
-            <button className="text-white">Services</button>
-            <ul className="absolute bg-gray-900 rounded-lg p-2 top-full left-0 hidden">
-              <li><Link to="/find-shifts" className="text-white">Find Shifts</Link></li>
-              <li><Link to="/post-shifts" className="text-white">Post Shifts</Link></li>
-            </ul>
-          </li>
-          <li className="relative">
-            <button className="text-white">User Profile</button>
-            <ul className="absolute bg-gray-900 rounded-lg p-2 top-full left-0 hidden">
-              <li><Link to="/account-settings" className="text-white">Account Settings</Link></li>
-              <li><Link to="/logout" className="text-white">Logout</Link></li>
-            </ul>
-          </li>
+        
+        <div onClick={()=>setOpen(!open)} className='text-3xl absolute right-8 top-6 cursor-pointer md:hidden'>
+        <Icons.List />
+        </div>
+
+        <ul className={`md:flex md:items-center md:pb-0 pb-2 absolute md:static bg-teal-50  md:z-auto z-[-1] left-0 w-full md:w-auto md:pl-0 pl-9 transition-all duration-500 ease-in ${open ? 'top-14 ':'top-[-490px]'}`}>
+            {
+            links.map((link, index)=>(
+                <li key={index} className='md:ml-8 text-xl md:my-0 my-7 font-[Titillium Web]' onClick={()=>setOpen(false)}>
+                    <Link to={link.url} className='text-gray-800 hover:text-teal-500  transition all duration-500 font-[Titillium Web]'>{link.name}</Link>
+                </li>
+            ))
+            }
         </ul>
       </div>
+
     </nav>
   );
 };
