@@ -1,23 +1,20 @@
 
-import firebase from 'firebase/app';
-import 'firebase/firestore';
+import { firestore } from '../../firebase/firebase.js';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import Pharmacist from './Pharmacist';
 
 
 class PharmacistController {
-  constructor() {
-    // Initialize Firebase Firestore
-    this.firestore = firebase.firestore();
-  }
-
 
   // Method to fetch pharmacist user details by ID
   async getPharmacistUserById(userId) {
     try {
       // Retrieve the pharmacist user document from Firestore
-      const docSnapshot = await this.firestore.collection('pharmacists').doc(userId).get();
-      if (docSnapshot.exists) {
-        const pharmacist = new Pharmacist(docSnapshot.data());
+      const docRef = doc(firestore, 'pharmacists', userId);
+      const docSnapshot = await getDoc(docRef);
+      if (docSnapshot.exists()) {
+        const data = docSnapshot.data();
+        const pharmacist = new Pharmacist(data);
         return pharmacist;
       } else {
         throw new Error('Pharmacist user not found');
@@ -35,14 +32,15 @@ class PharmacistController {
                 {
                     id: userData.email ?? userData.uid ?? '',
                     firstname: userData.displayName.split(' ')[0] ?? userData.email.split('@')[0] ?? '',
-                    lastname: userData.displayName.split(' ')[1] ?? '',
+                    lastname: userData.displayName.split(' ')[2] ??  userData.displayName.split(' ')[1] ?? '',
                     email: userData.email,
                     phoneNumber: userData.phoneNumber ?? '',
                     address: '',
-                    password: hashPassword(userData.email) ?? '',
+                    password: userData.email ?? '',
                     photo: userData.photoURL ?? '',
                     availability: [],
                     shifts: [],
+                    role: 'pharmacist'
                 }
             );
             return pharmacist;
@@ -56,7 +54,9 @@ class PharmacistController {
     //save pharmacist data to firestore 
     async savePharmacistToRemoteDb(pharmacist) {
         try {
-            await this.firestore.collection('pharmacists').doc(pharmacist.id).set({ ...pharmacist });
+            //await this.firestore.collection('pharmacists').doc(pharmacist.id).set({ ...pharmacist });
+            const docRef = doc(firestore, 'pharmacists', pharmacist.id);
+            await setDoc(docRef, { ...pharmacist });
             console.log('Pharmacist user saved to Remote db: ', pharmacist.id);
             return pharmacist;
         } catch (error) {
@@ -71,11 +71,27 @@ class PharmacistController {
             //clear the password field and then save other data to localStorage
             const pharmacistData = { ...pharmacist };
             delete pharmacistData.password;
-            localStorage.setItem('rxhustle-user', JSON.stringify(pharmacistData));
+            localStorage.setItem('rxhustle-pharmacist', JSON.stringify(pharmacistData));
             console.log('Pharmacist user saved to Local db: ', pharmacist.id);
             return pharmacist;
         } catch (error) {
             console.error('Error saving pharmacist user to local db: ', error);
+            throw error; // Throw the error for handling in the calling code
+        }
+    }
+
+    //method to get data of logged in pharmacist from local storage
+    getLoggedInPharmacist() {
+        try {
+            const pharmacistData = localStorage.getItem('rxhustle-pharmacist');
+            if (pharmacistData) {
+                const pharmacist = new Pharmacist(JSON.parse(pharmacistData));
+                return pharmacist;
+            } else {
+                return null;
+            }
+        } catch (error) {
+            console.error('Error fetching pharmacist user from local db: ', error);
             throw error; // Throw the error for handling in the calling code
         }
     }
@@ -86,3 +102,4 @@ class PharmacistController {
 
 // Export the PharmacistController class for use in other modules
 export default PharmacistController;
+

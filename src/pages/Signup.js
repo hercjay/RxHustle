@@ -7,41 +7,41 @@ import PharmacistController from '../features/Pharmacist/PharmacistController.js
 
 const Signup = () => {
     const [error, setError] = useState(null);
+    const pharmacistController = new PharmacistController();
+    
 
     const handleGoogleSignIn = async () => {
         try {
             signInWithPopup(auth, googleProvider).then((result) => {
                 const user = result.user;
                 console.log(user);
-                alert('Google Sign Up Successful: ' + user.displayName);
-
-                PharmacistController.getPharmacistUserById(user.email)
+                pharmacistController.getPharmacistUserById(user.email)
                     .then((pharmacist) => {
-                        console.log('Pharmacist user found. Save to local db: ', pharmacist);
-                        PharmacistController.savePharmacistToLocalDb(pharmacist);
+                        alert('Pharmacist user found. Save to local db: ', pharmacist);
+                        pharmacistController.savePharmacistToLocalDb(pharmacist);
                     })
                     .catch((error) => {
                         if(error.message === 'Pharmacist user not found') {
-                            PharmacistController.createPharmacistFromGoogleUser(user).then((pharmacist) => {
-                                PharmacistController.savePharmacistToRemoteDb(pharmacist).then((id) => {
+                            pharmacistController.createPharmacistFromGoogleUser(user).then((pharmacist) => {
+                                pharmacistController.savePharmacistToRemoteDb(pharmacist).then((id) => {
                                     console.log('Pharmacist saved to remote db. Now save to local db');
-                                    PharmacistController.savePharmacistToLocalDb(pharmacist).then(() => {
-                                        console.log('Pharmacist saved to local db');
+                                    pharmacistController.savePharmacistToLocalDb(pharmacist).then(() => {
+                                       
                                     }).catch((error) => {
-                                        console.error('Error saving pharmacist to local db: ', error);
+                                        console.log('Error saving pharmacist to local db: ', error);
                                     });
                                 }).catch((error) => {
-                                    console.error('Error creating pharmacist user: ', error);
+                                    console.log('Error creating pharmacist user: ', error);
                                 });
                             }).catch((error) => {
-                                console.error('Error creating pharmacist user from Google User object: ', error);
+                                console.log('Error creating pharmacist user from Google User object: ', error);
                             });
+                        } else {
+                            console.log('Error fetching pharmacist user: ', error);
                         }
-                        console.error('Error fetching pharmacist user: ', error);
+                        
                     }
                 )
-
-
 
             }
             ).catch((error) => {
@@ -49,6 +49,7 @@ const Signup = () => {
                 // The email of the user's account used.
                 const email = error.email;
                 setError(errorMessage);
+                console.log('Google Sign Up Error: ' + errorMessage);
                 alert('Google Sign Up Error: ' + errorMessage);
             });
         } catch (err){
