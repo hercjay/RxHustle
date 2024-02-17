@@ -23,7 +23,7 @@ const Navbar = () => {
   return (
     <nav className="shadow-md w-full sticky top-0 left-0">
     
-      <div className='md:flex items-center justify-between bg-teal-50 py-4 md:px-10 px-7'>
+      <div className='md:flex items-center justify-between bg-sky-50 py-4 md:px-10 px-7'>
         <div className='font-bold text-2xl cursor-pointer flex items-center font-[Titillium Web] 
         text-gray-800'>
             <span className='text-3xl mr-1 pt-2'>
@@ -33,14 +33,14 @@ const Navbar = () => {
         </div>
         
         <div onClick={()=>setOpen(!open)} className='text-3xl absolute right-8 top-6 cursor-pointer md:hidden'>
-        <Icons.List />
+        {open ? <Icons.X /> : <Icons.List />}
         </div>
 
-        <ul className={`md:flex md:items-center md:pb-0 pb-2 absolute md:static bg-teal-50  md:z-auto z-[-1] left-0 w-full md:w-auto md:pl-0 pl-9 transition-all duration-500 ease-in ${open ? 'top-14 ':'top-[-490px]'}`}>
+        <ul className={`md:flex md:items-center md:pb-0 pb-2 absolute md:static bg-sky-50  md:z-auto z-[-1] left-0 w-full md:w-auto md:pl-0 pl-9 transition-all duration-500 ease-in ${open ? 'top-14 ':'top-[-490px]'}`}>
             {
             links.map((link, index)=>(
                 <li key={index} className='md:ml-8 text-xl md:my-0 my-7 font-[Titillium Web]' onClick={()=>setOpen(false)}>
-                    <Link to={link.url} className='text-gray-800 hover:text-teal-500  transition all duration-500 font-[Titillium Web]'>{link.name}</Link>
+                    <Link to={link.url} className='text-gray-800 hover:text-sky-500  transition all duration-500 font-[Titillium Web]'>{link.name}</Link>
                 </li>
             ))
             }
