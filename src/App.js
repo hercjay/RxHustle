@@ -19,13 +19,13 @@ const App = () => {
       <div>
         <Navbar />
         <Routes>
-          <Route exact path="/" component={Home} />
-          <Route path="/about" component={About} />
-          <Route path="/find-shifts" component={FindShifts} />
-          <Route path="/post-shifts" component={PostShifts} />
-          <Route path="/user-profile" component={UserProfile} />
-          <Route path="/account-settings" component={AccountSettings} />
-          <Route path="/logout" component={Logout} />
+          <Route exact path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/find-shifts" element={<FindShifts />} />
+          <Route path="/post-shifts" element={<PostShifts />} />
+          <Route path="/user-profile" element={<UserProfile />} />
+          <Route path="/account-settings" element={<AccountSettings />} />
+          <Route path="/logout" element={<Logout />} />
         </Routes>
       </div>
     </Router>
