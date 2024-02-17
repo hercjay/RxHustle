@@ -10,6 +10,7 @@ class Pharmacist {
     this.photo = photo;
     this.availability = availability;
     this.shifts = shifts;
+    this.role = 'pharmacist';
   }
 }
 
