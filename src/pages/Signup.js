@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-// import { firebase, firebaseAuth, firebaseDB } from '../firebase/firebase.js';
 
 import { auth , googleProvider} from "../firebase/firebase.js";
 import { createUserWithEmailAndPassword,signInWithPopup, signOut } from "firebase/auth";
@@ -17,7 +16,7 @@ const Signup = () => {
                 console.log(user);
                 pharmacistController.getPharmacistUserById(user.email)
                     .then((pharmacist) => {
-                        alert('Pharmacist user found. Save to local db: ', pharmacist);
+                        console.log('Pharmacist user found. Save to local db: ', pharmacist);
                         pharmacistController.savePharmacistToLocalDb(pharmacist);
                     })
                     .catch((error) => {
@@ -59,13 +58,7 @@ const Signup = () => {
       };
 
 
-      const logOut = async () => {
-        try {
-        await signOut(auth);
-        } catch (err){
-          console.error(err);
-        }
-      };
+
 
 
     // const handleGoogleSignIn = () => {
