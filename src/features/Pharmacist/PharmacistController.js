@@ -1,7 +1,9 @@
 
-import { firestore } from '../../firebase/firebase.js';
+import { firestore, auth } from '../../firebase/firebase.js';
+import { signOut } from 'firebase/auth';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import Pharmacist from './Pharmacist';
+const passwordUtil = require('../../utils/passwordUtil.js');
 
 
 class PharmacistController {
@@ -43,6 +45,15 @@ class PharmacistController {
                     role: 'pharmacist'
                 }
             );
+            // Hash the password
+            await passwordUtil.hashPassword(pharmacist.password)
+            .then(hashedPassword => {
+                console.log('Hashed password:', hashedPassword);
+                pharmacist.password = hashedPassword;
+            })
+            .catch(error => {
+                console.error('Error hashing password for new pharmacist:', error);
+            });
             return pharmacist;
         } catch (error) {
             console.error('Error creating pharmacist user from Google User object: ', error);
@@ -54,7 +65,10 @@ class PharmacistController {
     //save pharmacist data to firestore 
     async savePharmacistToRemoteDb(pharmacist) {
         try {
-            //await this.firestore.collection('pharmacists').doc(pharmacist.id).set({ ...pharmacist });
+            if (!pharmacist || !pharmacist.id) {
+                console.error('Invalid pharmacist object:', pharmacist);
+                throw new Error('Invalid pharmacist object');
+            }
             const docRef = doc(firestore, 'pharmacists', pharmacist.id);
             await setDoc(docRef, { ...pharmacist });
             console.log('Pharmacist user saved to Remote db: ', pharmacist.id);
@@ -76,12 +90,23 @@ class PharmacistController {
             return pharmacist;
         } catch (error) {
             console.error('Error saving pharmacist user to local db: ', error);
-            throw error; // Throw the error for handling in the calling code
+            throw error; 
+        }
+    }
+
+    //remove pharmacist data from local db
+    async removePharmacistFromLocalDb() {
+        try {
+            localStorage.removeItem('rxhustle-pharmacist');
+            console.log('Pharmacist user removed from Local db');
+        } catch (error) {
+            console.error('Error removing pharmacist user from local db: ', error);
+            throw error; 
         }
     }
 
     //method to get data of logged in pharmacist from local storage
-    getLoggedInPharmacist() {
+    async getLoggedInPharmacist() {
         try {
             const pharmacistData = localStorage.getItem('rxhustle-pharmacist');
             if (pharmacistData) {
@@ -95,6 +120,19 @@ class PharmacistController {
             throw error; // Throw the error for handling in the calling code
         }
     }
+
+
+    async logOut(){
+        try {
+        await signOut(auth)
+            .then(() => {
+                this.removePharmacistFromLocalDb();
+                console.log('User signed out');
+            })
+        } catch (err){
+          console.error(err);
+        }
+      };
 
 
 
