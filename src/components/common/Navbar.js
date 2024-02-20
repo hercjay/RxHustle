@@ -1,27 +1,47 @@
 
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { List as ListIcon, X as XIcon} from 'react-bootstrap-icons';
+import PharmacistController from '../../features/Pharmacist/PharmacistController';
+import LoadingOverlay from './LoadingOverlay';
+import { LoadingContext } from '../../context/LoadingContext';
 
 
 
 
-const Navbar = () => {
+const  Navbar = () => {
 
     let links = [
         { name: 'Home', url: '/' },
         { name: 'About', url: '/about' },
         { name: 'Find Shifts', url: '/find-shifts' },
         { name: 'Post Shifts', url: '/post-shifts' },
-        { name: 'Account Settings', url: '/account-settings' },
         {name: 'Services', url: '/services' },
-        { name: 'Logout', url: '/logout' },
     ];
 
+    const { isLoading } = useContext(LoadingContext);
+    
+
+    const pharmacistController = new PharmacistController();
+
+    const user = pharmacistController.getLoggedInPharmacist();
+    if (user === null) {
+      links.push({ name: 'Login', url: '/login' });
+    } else {
+      links.push({ name: 'Logout', url: '/logout' });
+      links.push({ name: 'Dashboard', url: '/dashboard' });
+    }
+
+
     let [open,setOpen]=useState(false);
+   
+
 
   return (
     <nav className="shadow-md w-full sticky top-0 left-0 z-30">
+      {isLoading && (
+            <LoadingOverlay />
+          )}
     
       <div className='md:flex items-center justify-between bg-sky-100 py-4 md:px-10 px-7'>
         <Link to='/' className='font-bold text-3xl cursor-pointer flex items-center font-[Titillium Web] 
