@@ -127,7 +127,7 @@ class PharmacistController {
         await signOut(auth)
             .then(() => {
                 this.removePharmacistFromLocalDb();
-                console.log('User signed out');
+                console.log('Pharmacist signed out');
             })
         } catch (err){
           console.error(err);
