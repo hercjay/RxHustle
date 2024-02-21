@@ -1,17 +1,18 @@
 
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { List as ListIcon, X as XIcon} from 'react-bootstrap-icons';
 import PharmacistController from '../../features/Pharmacist/PharmacistController';
 import LoadingOverlay from './LoadingOverlay';
 import { LoadingContext } from '../../context/LoadingContext';
+import UserProfileDropdown from '../layout/UserProfileDropdown';
 
 
 
 
 const  Navbar = () => {
 
-    let links = [
+    let defaultLinks = [
         { name: 'Home', url: '/' },
         { name: 'About', url: '/about' },
         { name: 'Find Shifts', url: '/find-shifts' },
@@ -24,14 +25,25 @@ const  Navbar = () => {
 
     const pharmacistController = new PharmacistController();
 
-    const user = pharmacistController.getLoggedInPharmacist();
-    if (user === null) {
-      links.push({ name: 'Login', url: '/login' });
-    } else {
-      links.push({ name: 'Logout', url: '/logout' });
-      links.push({ name: 'Dashboard', url: '/dashboard' });
-    }
-
+    const [user, setUser] = useState(null);
+    const [links, setLinks] = useState(defaultLinks);
+  
+    useEffect(() => {
+      pharmacistController.getLoggedInPharmacist().then((pharmacist) => {
+        setUser(pharmacist);
+        console.log('Logged in pharmacist: ', pharmacist);
+      }).catch((error) => {
+        console.log('Error getting logged in pharmacist: ', error);
+      });
+    }, []);
+  
+    useEffect(() => {
+      if (user === null) {
+        setLinks([...defaultLinks, { name: 'Login', url: '/login' }]);
+      } else {
+        setLinks([...defaultLinks, { name: 'Logout', url: '/logout' }, { name: 'Dashboard', url: '/dashboard' }]);
+      }
+    }, [user]);
 
     let [open,setOpen]=useState(false);
    
@@ -64,7 +76,12 @@ const  Navbar = () => {
                 </li>
             ))
             }
+            {
+              user !== null && <UserProfileDropdown user={user} />
+            }
         </ul>
+
+
       </div>
 
     </nav>
