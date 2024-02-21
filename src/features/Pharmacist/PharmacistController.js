@@ -109,7 +109,7 @@ class PharmacistController {
     async getLoggedInPharmacist() {
         try {
             const pharmacistData = localStorage.getItem('rxhustle-pharmacist');
-            if (pharmacistData) {
+            if (pharmacistData !== null) {
                 const pharmacist = new Pharmacist(JSON.parse(pharmacistData));
                 return pharmacist;
             } else {
