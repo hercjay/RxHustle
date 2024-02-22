@@ -67,13 +67,13 @@ const Signup = () => {
 
       return (
         <div className="flex flex-col items-center justify-center h-[25em]">
-          <h2 className="text-3xl text-sky-700 font-bold mb-4">Sign Up</h2>
-          <p className="text-md mb-6">Sign up with your Google account to get started!</p>
+          <h2 className="text-3xl text-sky-700 font-bold mb-4">Sign Up or Login</h2>
+          <p className="text-md mb-6">Sign up or login with your Google account to get started!</p>
           <button
             onClick={handleGoogleSignIn}
             className='bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded shadow-lg shadow-sky-300 flex gap-2 items-center'
           >
-            <GoogleIcon className='text-2xl' /> Sign Up with Google
+            <GoogleIcon className='text-2xl' /> Continue with Google
           </button>
         </div>
       );

@@ -37,7 +37,7 @@ const  Navbar = () => {
   
     useEffect(() => {
       if (user === null) {
-        setLinks([...defaultLinks, { name: 'Login', url: '/login' }, { name: 'Signup', url: '/signup' }]);
+        setLinks([...defaultLinks, { name: 'Login/SignUp', url: '/signup' }]); //{ name: 'Login', url: '/login' },
       } else {
         setLinks([...defaultLinks]);
       }
