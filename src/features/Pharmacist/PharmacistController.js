@@ -130,7 +130,7 @@ class PharmacistController {
                 console.log('Pharmacist signed out');
             })
         } catch (err){
-          console.error(err);
+          console.error('failed to log out user: ' + err);
         }
       };
 
