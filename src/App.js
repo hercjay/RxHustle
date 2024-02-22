@@ -14,6 +14,7 @@ import Logout from './pages/Logout';
 import ScrollToTop from './components/common/ScrollToTop';
 import Signup from './pages/Signup';
 import Dashboard from './pages/Dashboard';
+import EditProfile from './pages/EditProfile';
 
 
 
@@ -34,6 +35,7 @@ const App = () => {
               <Route path="/account-settings" element={<AccountSettings />} />
               <Route path="/logout" element={<Logout />} />
               <Route path="/signup" element={<Signup />} />
+              <Route path="/edit-profile" element={<EditProfile />} />
             </Routes>
           </div>
         </Router>
