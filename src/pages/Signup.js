@@ -1,14 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Google as GoogleIcon } from 'react-bootstrap-icons';
 
 import { auth , googleProvider} from "../firebase/firebase.js";
 import { createUserWithEmailAndPassword,signInWithPopup, signOut } from "firebase/auth";
 import PharmacistController from '../features/Pharmacist/PharmacistController.js';
+import { LoadingContext } from '../context/LoadingContext.js';
 
 const Signup = () => {
     const [error, setError] = useState(null);
+    const { user, setUser } = useContext(LoadingContext);
     const pharmacistController = new PharmacistController();
+    const navigate = useNavigate();
     
-
     const handleGoogleSignIn = async () => {
         try {
             signInWithPopup(auth, googleProvider).then((result) => {
@@ -18,6 +22,8 @@ const Signup = () => {
                     .then((pharmacist) => {
                         console.log('Pharmacist user found. Save to local db: ', pharmacist);
                         pharmacistController.savePharmacistToLocalDb(pharmacist);
+                        setUser(pharmacist);
+                        navigate('/dashboard');
                     })
                     .catch((error) => {
                         if(error.message === 'Pharmacist user not found') {
@@ -25,7 +31,8 @@ const Signup = () => {
                                 pharmacistController.savePharmacistToRemoteDb(pharmacist).then((id) => {
                                     console.log('Pharmacist saved to remote db. Now save to local db');
                                     pharmacistController.savePharmacistToLocalDb(pharmacist).then(() => {
-                                       
+                                        setUser(pharmacist);
+                                        navigate('/dashboard');
                                     }).catch((error) => {
                                         console.log('Error saving pharmacist to local db: ', error);
                                     });
@@ -58,43 +65,18 @@ const Signup = () => {
       };
 
 
-
-
-
-    // const handleGoogleSignIn = () => {
-    //     const provider = googleProvider;
-    //     firebaseAuth.signInWithPopup(provider)
-    //         .then((result) => {
-    //             // Handle successful Google signup
-    //             console.log(result.user);
-    //             alert('Google Sign Up Successful: ' + result.user.displayName);
-    //         })
-    //         .catch((error) => {
-    //             // Handle error
-    //             console.error(error);
-    //             setError(error.message);
-    //             alert('Google Sign Up Error: ' + error.message);
-    //         });
-    // };
-
-    //   const handleGoogleSignIn = async () => {
-    //         try {
-    //             // Sign in with Google provider
-    //             const provider = new firebase.auth.GoogleAuthProvider();
-    //             await firebaseAuth.signInWithPopup(provider);
-    //             alert('Sign in with Google successful' + user.displayName);
-    //         } catch (error) {
-    //             setError(error.message);
-    //             alert('Sign in with Google failed');
-    //         }
-    //     };
-
-    return (
-        <div>
-            <div>Signup</div>
-            <button onClick={handleGoogleSignIn}>Google Sign Up</button>
+      return (
+        <div className="flex flex-col items-center justify-center h-[25em]">
+          <h2 className="text-3xl text-sky-700 font-bold mb-4">Sign Up</h2>
+          <p className="text-md mb-6">Sign up with your Google account to get started!</p>
+          <button
+            onClick={handleGoogleSignIn}
+            className='bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded shadow-lg shadow-sky-300 flex gap-2 items-center'
+          >
+            <GoogleIcon className='text-2xl' /> Sign Up with Google
+          </button>
         </div>
-    );
+      );
 };
 
 export default Signup
