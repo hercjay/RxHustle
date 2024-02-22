@@ -131,6 +131,7 @@ class PharmacistController {
             })
         } catch (err){
           console.error('failed to log out user: ' + err);
+          alert('Failed to log out. Try again later.');
         }
       };
 
