@@ -1,14 +1,24 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 
 const UserProfileDropdown = ({ user }) => {
+
+    let userDropdownLinks = [
+        { name: 'Dashboard', url: '/dashboard' },
+        { name: 'Profile', url: '/my-profile' },
+    ];
+
+
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const profilePhotoRef = useRef(null);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
         dropdownRef.current &&
-        !dropdownRef.current.contains(event.target)
+        !dropdownRef.current.contains(event.target) &&
+        profilePhotoRef.current !== event.target
       ) {
         setIsDropdownOpen(false);
       }
@@ -26,9 +36,9 @@ const UserProfileDropdown = ({ user }) => {
   };
 
   return (
-    <div className="relative inline-block">
+    <div>
       {user?.photo && (
-        <button onClick={toggleDropdown} className="focus:outline-none">
+        <button ref={profilePhotoRef} onClick={toggleDropdown} className="focus:outline-none">
           <img
             src={user.photo}
             alt="user"
@@ -39,21 +49,18 @@ const UserProfileDropdown = ({ user }) => {
       {isDropdownOpen && (
         <div
           ref={dropdownRef}
-          className="absolute right-0 mt-2 bg-white rounded-md shadow-lg"
+          className="md:absolute  md:right-0 mt-2 bg-sky-200 flex md:rounded-md shadow-lg"
         >
           <div className="py-1">
-            <a
-              href="#"
-              className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-            >
-              Link 1
-            </a>
-            <a
-              href="#"
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-            >
-              Link 2
-            </a>
+            <Link to='/dashboard' className="block w-full px-4 py-2 text-md text-gray-700 hover:bg-gray-100">
+              My Dashboard
+            </Link>
+            <Link to='/edit-profile' className="block w-full px-4 py-2 text-md text-gray-700 hover:bg-gray-100">
+              Edit Profile
+            </Link>
+            <Link to='/logout' className="block w-full px-4 py-2 text-md text-gray-700 hover:bg-gray-100">
+              Logout
+            </Link>
           </div>
         </div>
       )}
