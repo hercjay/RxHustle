@@ -27,12 +27,17 @@ const  Navbar = () => {
     const [links, setLinks] = useState(defaultLinks);
   
     useEffect(() => {
-      pharmacistController.getLoggedInPharmacist().then((pharmacist) => {
-        setUser(pharmacist);
-        console.log('Logged in pharmacist: ', pharmacist);
-      }).catch((error) => {
-        console.log('Error getting logged in pharmacist: ', error);
-      });
+      if(user === null) {
+        setIsLoading(true);
+        pharmacistController.getLoggedInPharmacist().then((pharmacist) => {
+          setUser(pharmacist);
+          setIsLoading(false);
+          console.log('Logged in pharmacist: ', pharmacist);
+        }).catch((error) => {
+          console.log('Error getting logged in pharmacist: ', error);
+          setIsLoading(false);
+        });
+      }
     }, []);
   
     useEffect(() => {
