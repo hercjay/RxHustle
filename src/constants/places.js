@@ -112,5 +112,6 @@ export const places = [
     'Victoria Garden City',
     'Victoria Island',
     'Yaba',
-    'Yaba College Of Technology'
+    'Yaba College Of Technology',
+    'Others Places...',
 ];
