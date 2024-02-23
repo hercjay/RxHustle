@@ -49,17 +49,20 @@ const UserProfileDropdown = ({ user }) => {
       {isDropdownOpen && (
         <div
           ref={dropdownRef}
-          className="md:absolute  md:right-0 mt-2 bg-sky-200 flex md:rounded-md shadow-lg"
+          className="md:absolute  md:right-5 mt-2 bg-sky-200 flex md:rounded-md shadow-lg"
         >
           <div className="py-1">
-            <Link to='/dashboard' className="block w-full px-4 py-2 text-md text-gray-700 hover:bg-gray-100">
-              My Dashboard
+            <Link to='/dashboard' onClick={() => setIsDropdownOpen(false)}
+                className="block w-full px-4 py-2 text-md text-gray-700 hover:bg-gray-100">
+                My Dashboard
             </Link>
-            <Link to='/edit-profile' className="block w-full px-4 py-2 text-md text-gray-700 hover:bg-gray-100">
-              Edit Profile
+            <Link to='/edit-profile' onClick={() => setIsDropdownOpen(false)}
+                className="block w-full px-4 py-2 text-md text-gray-700 hover:bg-gray-100">
+                Edit Profile
             </Link>
-            <Link to='/logout' className="block w-full px-4 py-2 text-md text-gray-700 hover:bg-gray-100">
-              Logout
+            <Link to='/logout' onClick={() => setIsDropdownOpen(false)}
+                className="block w-full px-4 py-2 text-md text-gray-700 hover:bg-gray-100">
+                Logout
             </Link>
           </div>
         </div>
