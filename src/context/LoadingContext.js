@@ -6,6 +6,9 @@ export const LoadingContext = createContext();
 export const LoadingProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState(null);
+  const [isShowToast, setIsShowToast] = useState(false);
+  const [toastType, setToastType] = useState('success');
+  const [toastMessage, setToastMessage] = useState('This is a test message');
   const pharmacistController = new PharmacistController();
 
 
@@ -21,7 +24,11 @@ export const LoadingProvider = ({ children }) => {
   }, []);
 
   return (
-    <LoadingContext.Provider value={{ isLoading, setIsLoading, user, setUser }}>
+    <LoadingContext.Provider value={{ 
+      isLoading, setIsLoading, user, setUser, isShowToast, 
+      setIsShowToast, toastType, setToastType, toastMessage, 
+      setToastMessage 
+      }}>
       {children}
     </LoadingContext.Provider>
   );

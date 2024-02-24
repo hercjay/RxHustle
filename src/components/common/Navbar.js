@@ -6,6 +6,7 @@ import PharmacistController from '../../features/Pharmacist/PharmacistController
 import LoadingOverlay from './LoadingOverlay';
 import { LoadingContext } from '../../context/LoadingContext';
 import UserProfileDropdown from '../layout/UserProfileDropdown';
+import Toast from './Toast';
 
 
 
@@ -20,7 +21,11 @@ const  Navbar = () => {
         {name: 'Services', url: '/services' },
     ];
 
-    const { isLoading, setIsLoading, user, setUser } = useContext(LoadingContext);
+    const { 
+      isLoading, setIsLoading, user, setUser, isShowToast,
+      seIsShowToast, toastType, setToastType, 
+      toastMessage, setToastMessage
+    } = useContext(LoadingContext);
     
 
     const pharmacistController = new PharmacistController();
@@ -57,6 +62,7 @@ const  Navbar = () => {
       {isLoading && (
             <LoadingOverlay />
           )}
+      {isShowToast && <Toast /> }
     
       <div className='md:flex items-center justify-between bg-sky-100 py-4 md:px-10 px-7'>
         <Link to='/' className='font-bold text-3xl cursor-pointer flex items-center font-[Titillium Web] 
