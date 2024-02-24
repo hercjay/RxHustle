@@ -7,7 +7,10 @@ import MyButton from '../components/common/MyButton.js';
 
 const PostShifts = () => {
 
-  const { user, isLoading, setIsLoading } = useContext(LoadingContext);
+  const { 
+    user, isLoading, setIsLoading, isShowToast, setIsShowToast,
+    toastType, setToastType, toastMessage, setToastMessage
+  } = useContext(LoadingContext);
   const [ shouldRedirect, setShouldRedirect ] = useState(false);
 
   const navigate = useNavigate();
@@ -26,6 +29,14 @@ const PostShifts = () => {
     }
   }, [shouldRedirect]);
 
+
+  useEffect(() => {
+    setFormData(prevFormData => ({
+      ...prevFormData,
+      pharmacistId: user?.id ?? '',
+    }));
+  }, [user]);
+
   const [formData, setFormData] = useState({
     place: '',
     date: '',
@@ -33,8 +44,20 @@ const PostShifts = () => {
     end: '',
     location: locations[0],
     rate: '',
-    pharmacistId: user.id,
+    pharmacistId: user?.id ?? '',
   });
+
+  const resetFormData = () => {
+    setFormData({
+      place: '',
+      date: '',
+      start: '',
+      end: '',
+      location: locations[0],
+      rate: '',
+      pharmacistId: user?.id ?? '',
+    });
+  };
 
 
   const handleChange = (e) => {
@@ -53,9 +76,9 @@ const PostShifts = () => {
       const shift = shiftController.createShift(formData);
       shiftController.addShiftToRemoteDb(shift).then((shift)=> {
         setIsLoading(false);
-        alert('Shift posted successfully!');
-        console.log('Shift posted successfully: ', shift);
-        //navigate('/dashboard');
+        setToastMessage('Shift posted successfully!');
+        setIsShowToast(true);
+        navigate('/dashboard');
       }).catch((error)=>{
         setIsLoading(false);
         alert('Failed to save shift. Try again later.');
