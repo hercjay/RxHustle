@@ -76,6 +76,8 @@ class ShiftController {
                     await setDoc(docRef, {
                         shiftId: shift.id,
                         shiftCreatorId: shift.pharmacistId,
+                        shiftDate: shift.date,
+                        shiftEndTime: shift.end,
                         applicantId: user.id,
                         applicantEmail: user.email,
                         status: 'pending',
@@ -90,7 +92,31 @@ class ShiftController {
             throw error;
         }
     }
-    
+
+
+    // Get all applications for shifts I posted that are not expired
+    async getApplicationsForMyShifts(user) {
+        try {
+            const applications = [];
+            const querySnapshot = await getDocs(query(collection(firestore, 'applications'), orderBy('createdAt', 'desc')));
+            querySnapshot.forEach((doc) => {
+                if (doc.data().shiftCreatorId === user.id) {
+                    //check if shift is not expired using the date and end time
+                    const shiftDate = new Date(doc.data().shiftDate); //storedFormat "2024-03-01" (string)
+                    const shiftEndTimeParts = doc.data().shiftEndTime.split(':');  //storedFormat "21:45" (string)
+                    shiftDate.setHours(shiftEndTimeParts[0], shiftEndTimeParts[1]); 
+                    const currentTime = new Date();
+                    if (shiftDate >= currentTime) {
+                        applications.push(doc.data());
+                    }
+                }
+            });
+            return applications;
+        } catch (error) {
+            console.error('Error getting applications: ', error);
+            throw error;
+        }
+    }
 
 
 }
