@@ -31,7 +31,7 @@ const Home = () => {
                 </h2>
 
 
-                <div className='my-10'>
+                {/* <div className='my-10'>
                     <div className='bg-white rounded-lg p-4 grid grid-cols-1 md:grid-cols-3 gap-4 items-center'>
                         
                             <MyDatePicker selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
@@ -44,7 +44,7 @@ const Home = () => {
                             <MyButton text='Find Shifts' />
                         
                     </div>
-                </div>
+                </div> */}
 
 
                 <div className='my-10 grid grid-cols-2 md:grid-cols-4 gap-4'>
@@ -56,7 +56,7 @@ const Home = () => {
 
                 <Link to='/find-shifts' className='grid grid-cols-1 md:grid-cols-3'>
                     <div></div>
-                    <MyButton text='See All Shifts' />
+                    <MyButton text='Find the Shift You Want' />
                     <div></div>
                 </Link>
 
