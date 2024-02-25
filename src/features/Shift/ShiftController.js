@@ -96,6 +96,7 @@ class ShiftController {
                     return "You have already applied for this shift. You will be notified if you are selected.";
                 } else {
                     await setDoc(docRef, {
+                        id: `${user.id}_${shift.id}`,
                         shiftId: shift.id,
                         shiftCreatorId: shift.pharmacistId,
                         shiftDate: shift.date,
@@ -184,6 +185,34 @@ class ShiftController {
             return applications;
         } catch (error) {
             console.error('Error getting applications: ', error);
+            throw error;
+        }
+    }
+
+
+    // reject a shift application
+    async rejectShiftApplication(application) {
+        try {
+            const docRef = doc(firestore, 'applications', String(application.id));
+            await setDoc(docRef, { status: 'rejected' }, { merge: true });
+            console.log('Shift application rejected with ID: ', docRef.id);
+            return true;
+        } catch (error) {
+            console.error('Error rejecting shift application: ', error);
+            throw error;
+        }
+    }
+
+
+    // approve a shift application
+    async approveShiftApplication(application) {
+        try {
+            const docRef = doc(firestore, 'applications', String(application.id));
+            await setDoc(docRef, { status: 'approved' }, { merge: true });
+            console.log('Shift application approved with ID: ', docRef.id);
+            return true;
+        } catch (error) {
+            console.error('Error approving shift application: ', error);
             throw error;
         }
     }
