@@ -1,8 +1,10 @@
 import React,  { useContext, useEffect, useState } from 'react'
 import { LoadingContext } from '../context/LoadingContext';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import ShiftController from '../features/Shift/ShiftController';
 import ShiftApplicationCard from '../components/ShiftApplicationCard/ShiftApplicationCard';
+import ShiftCardWithAdmin from '../components/ShiftCard/ShiftCardWithAdmin';
+import MyTertiaryButton from '../components/common/MyTertiaryButton';
 
 
 const Dashboard = () => {
@@ -18,6 +20,8 @@ const Dashboard = () => {
   const [ pendingCount, setPendingCount ] = useState(0);
   const [ approvedCount, setApprovedCount ] = useState(0);
   const [ rejectedCount, setRejectedCount ] = useState(0);
+  const [ shiftsCreatedByMe, setShiftsCreatedByMe ] = useState([]);
+  const [ shiftsCount, setShiftsCount ] = useState(0);
 
   const shiftController = new ShiftController();
   
@@ -56,6 +60,17 @@ const Dashboard = () => {
           setToastMessage('Error getting rejected applications for my shifts. Try again later');
           setIsShowToast(true);
         });
+
+        setIsLoading(true);
+        shiftController.getAllShiftsByPharm(user).then((shifts) => {
+          setShiftsCreatedByMe(shifts);
+          setIsLoading(false);
+        }).catch((error) => {
+          setIsLoading(false);
+          setToastType('error');
+          setToastMessage('Error getting shifts created by you. Try again later');
+          setIsShowToast(true);
+        });
       }
     }
     , [user]);
@@ -77,6 +92,12 @@ const Dashboard = () => {
       setRejectedShiftApplications([...rejectedShiftApplications, newApplication]);
     };
 
+    const removeShiftFromState = (shift) => {
+      setShiftsCreatedByMe(
+        shiftsCreatedByMe.filter((s) => s.id !== shift.id)
+      );
+    }
+
     useEffect(() => {
       setPendingCount(applicationsForMyShifts.length);
     }, [applicationsForMyShifts]);
@@ -88,6 +109,15 @@ const Dashboard = () => {
     useEffect(() => {
       setRejectedCount(rejectedShiftApplications.length);
     }, [rejectedShiftApplications]);
+
+    useEffect(() => {
+      setShiftsCount(shiftsCreatedByMe.length);
+    }
+    , [shiftsCreatedByMe]);
+
+
+
+
 
 
   
@@ -171,6 +201,32 @@ const Dashboard = () => {
                 application = {application} moveToApproved={() => moveToApproved(application)}
                 moveToRejected={() => moveToRejected(application)}
                 isPending={false}
+              />
+            )
+          })
+        }
+      </div>
+
+
+
+      {/* Shifts Created by Me */}
+      <h2 className="font-bold mt-8 text-2xl text-sky-700">
+          Shifts Created by You
+      </h2>
+      <p className="text-sm font-normal text-slate-500 mb-4">
+       { shiftsCount <= 0 ? 'You have no active shifts created' : 'You have ' + shiftsCount + ' shifts created'} 
+      </p>
+
+      <Link to="/post-shifts" >
+          <MyTertiaryButton text='Create a New Shift'  />
+      </Link>
+
+      <div className='grid mt-4 gap-2 grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 bg-sky-100 p-4 rounded-lg'>
+        {
+          shiftsCreatedByMe.map((shift, index) => {
+            return (
+              <ShiftCardWithAdmin shift={shift} key={index} 
+                removeShiftFromState={() => removeShiftFromState(shift)}
               />
             )
           })

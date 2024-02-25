@@ -1,5 +1,5 @@
 import { firestore, auth } from '../../firebase/firebase.js';
-import { doc, getDoc, getDocs, setDoc, collection, query, orderBy } from 'firebase/firestore';
+import { doc, getDoc, getDocs, deleteDoc, setDoc, collection, query, orderBy } from 'firebase/firestore';
 import Shift from './Shift.js';
 
 
@@ -34,6 +34,20 @@ class ShiftController {
         });
         return shift;
     }
+
+    // delete a shift from the remote database
+    async deleteShift(shift) {
+        try {
+            const docRef = doc(firestore, 'shifts', shift.id);
+            await deleteDoc(docRef);
+            console.log('Shift deleted with ID: ', shift.id);
+            return true;
+        } catch (error) {
+            console.error('Error deleting shift: ', error);
+            throw error;
+        }
+    }
+
     
     // Method to add a new shift to the remote database
     async addShiftToRemoteDb(shift) {
@@ -62,6 +76,24 @@ class ShiftController {
             throw error;
         }
     }
+
+    //Get all shifts created by a specific pharmacist
+    async getAllShiftsByPharm (pharmacist) {
+        try {
+            const shifts = [];
+            const querySnapshot = await getDocs(query(collection(firestore, 'shifts'), orderBy('createdAt', 'desc')));
+            querySnapshot.forEach((doc) => {
+                if (doc.data().pharmacistId === pharmacist.id) {
+                    shifts.push(doc.data());
+                }
+            });
+            return shifts;
+        } catch (error) {
+            console.error('Error getting shifts by Pharmacist: ', error);
+            throw error;
+        }
+    }
+
 
     //get all shifts from db with filters
     async getShiftsByDateAndLocationFromRemoteDb (date, location) {
