@@ -9,11 +9,15 @@ const Dashboard = () => {
 
   const { 
     isLoading, setIsLoading, isShowToast, setIsShowToast, user,
-    toastType, setToastType, toastMessage, setToastMessage } = useContext(LoadingContext);
+    toastType, setToastType, toastMessage, setToastMessage,
+    applicationsForMyShifts , setApplicationsForMyShifts
+   } = useContext(LoadingContext);
 
-  const [ applicationsForMyShifts , setApplicationsForMyShifts ] = useState([]);
   const [ approvedShiftApplications , setApprovedShiftApplications ] = useState([]);
   const [ rejectedShiftApplications , setRejectedShiftApplications ] = useState([]);
+  const [ pendingCount, setPendingCount ] = useState(0);
+  const [ approvedCount, setApprovedCount ] = useState(0);
+  const [ rejectedCount, setRejectedCount ] = useState(0);
 
   const shiftController = new ShiftController();
   
@@ -57,10 +61,34 @@ const Dashboard = () => {
     , [user]);
 
 
-    
-    const pendingCount = applicationsForMyShifts.length;
-    const approvedCount = approvedShiftApplications.length;
-    const rejectedCount = rejectedShiftApplications.length;
+    const moveToApproved = (application) => {
+      setApplicationsForMyShifts(
+        applicationsForMyShifts.filter((app) => app.id !== application.id)
+      );
+      const newApplication = { ...application, status: 'approved' };
+      setApprovedShiftApplications([...approvedShiftApplications, newApplication]);
+    };
+
+    const moveToRejected = (application) => {
+      setApplicationsForMyShifts(
+        applicationsForMyShifts.filter((app) => app.id !== application.id)
+      );
+      const newApplication = { ...application, status: 'rejected' };
+      setRejectedShiftApplications([...rejectedShiftApplications, newApplication]);
+    };
+
+    useEffect(() => {
+      setPendingCount(applicationsForMyShifts.length);
+    }, [applicationsForMyShifts]);
+
+    useEffect(() => {
+      setApprovedCount(approvedShiftApplications.length);
+    }, [approvedShiftApplications]);
+
+    useEffect(() => {
+      setRejectedCount(rejectedShiftApplications.length);
+    }, [rejectedShiftApplications]);
+
 
   
 
@@ -78,8 +106,8 @@ const Dashboard = () => {
 
 
     {/* PENDING SHIFTS */}
-      <h2 className="font-bold text-3xl text-sky-700">
-          Pending Shift Applications To My Shifts
+      <h2 className="font-bold text-2xl text-sky-700">
+          Pending Applications To My Shifts
       </h2>
       <p className="text-sm font-normal text-slate-500">
        { pendingCount <= 0 ? 'No pending shift applications' : 'You have ' + pendingCount + ' pending shift applications'} 
@@ -89,7 +117,12 @@ const Dashboard = () => {
         {
           applicationsForMyShifts.map((application, index) => {
             return (
-              <ShiftApplicationCard user={user} key={index} application = {application} />
+              <ShiftApplicationCard user={user} 
+                key={index} application = {application} 
+                moveToApproved={() => moveToApproved(application)}
+                moveToRejected={() => moveToRejected(application)}
+                isPending={true}
+              />
             )
           })
         }
@@ -98,8 +131,8 @@ const Dashboard = () => {
 
 
       {/* APPROVED SHIFTS */}
-      <h2 className="font-bold text-3xl text-sky-700 pt-8">
-        Shift Applications I Approved
+      <h2 className="font-bold mt-8 text-2xl text-sky-700">
+          Approved Applications To My Shifts
       </h2>
       <p className="text-sm font-normal text-slate-500">
        { approvedCount <= 0 ? 'No approved shift applications' : 'You have ' + approvedCount + ' approved shift applications'} 
@@ -109,7 +142,12 @@ const Dashboard = () => {
         {
           approvedShiftApplications.map((application, index) => {
             return (
-              <ShiftApplicationCard user={user} key={index} application = {application} />
+              <ShiftApplicationCard user={user} key={index} 
+              application = {application} 
+              moveToApproved={() => moveToApproved(application)}
+                moveToRejected={() => moveToRejected(application)}
+                isPending={false}
+              />
             )
           })
         }
@@ -118,8 +156,8 @@ const Dashboard = () => {
 
 
       {/* REJECTED SHIFTS */}
-      <h2 className="font-bold text-3xl text-sky-700 pt-8">
-        Shift Applications I Rejected
+      <h2 className="font-bold mt-8 text-2xl text-sky-700">
+          Rejected Applications To My Shifts
       </h2>
       <p className="text-sm font-normal text-slate-500">
        { rejectedCount <= 0 ? 'No rejected shift applications' : 'You have ' + rejectedCount + ' rejected shift applications'} 
@@ -127,9 +165,13 @@ const Dashboard = () => {
 
       <div className='grid mt-4 gap-2 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 bg-sky-100 p-4 rounded-lg'>
         {
-          approvedShiftApplications.map((application, index) => {
+          rejectedShiftApplications.map((application, index) => {
             return (
-              <ShiftApplicationCard user={user} key={index} application = {application} />
+              <ShiftApplicationCard user={user} key={index} 
+                application = {application} moveToApproved={() => moveToApproved(application)}
+                moveToRejected={() => moveToRejected(application)}
+                isPending={false}
+              />
             )
           })
         }
