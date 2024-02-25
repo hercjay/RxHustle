@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
-const UserProfileDropdown = ({ user, count }) => {
+const UserProfileDropdown = ({ user, count, setOpen }) => {
 
     let userDropdownLinks = [
         { name: 'Dashboard', url: '/dashboard' },
@@ -52,15 +52,15 @@ const UserProfileDropdown = ({ user, count }) => {
           className="md:absolute  md:right-5 mt-2 bg-sky-200 flex md:rounded-md shadow-lg"
         >
           <div className="py-1">
-            <Link to='/dashboard' onClick={() => setIsDropdownOpen(false)}
+            <Link to='/dashboard' onClick={() => { setIsDropdownOpen(false); setOpen(false); }}
                 className="block w-full px-4 py-2 text-md text-gray-700 hover:bg-gray-100">
                 My Dashboard {count > 0 && <span className="text-white text-xs bg-red-500 px-2 rounded-sm">{count > 99 ? '99+' : count}</span>}
             </Link>
-            <Link to='/edit-profile' onClick={() => setIsDropdownOpen(false)}
+            <Link to='/edit-profile' onClick={() => { setIsDropdownOpen(false); setOpen(false); }}
                 className="block w-full px-4 py-2 text-md text-gray-700 hover:bg-gray-100">
                 Edit Profile
             </Link>
-            <Link to='/logout' onClick={() => setIsDropdownOpen(false)}
+            <Link to='/logout' onClick={() => { setIsDropdownOpen(false); setOpen(false); }}
                 className="block w-full px-4 py-2 text-md text-gray-700 hover:bg-gray-100">
                 Logout
             </Link>

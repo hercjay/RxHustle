@@ -114,7 +114,7 @@ const  Navbar = () => {
                 <div className='hidden absolute right-9 top-2 md:flex items-center justify-center text-xs text-center text-white bg-red-600 rounded-full w-6 h-6'>
                   {applicationsForMyShifts.length > 99 ? '99+' : applicationsForMyShifts.length}
                 </div>
-                <UserProfileDropdown user={user} count = {applicationsForMyShifts.length} />
+                <UserProfileDropdown setOpen={setOpen} user={user} count = {applicationsForMyShifts.length} />
               </div>
             }
         </ul>
