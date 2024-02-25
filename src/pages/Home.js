@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
-import { places } from '../constants/places.js';
+import React, { useContext, useState } from 'react';
 import {shifts} from '../constants/shifts.js';
 import ShiftCard from '../components/ShiftCard/ShiftCard.js';
-import MyDatePicker from '../components/common/MyDatePicker.js';
 import MyButton from '../components/common/MyButton.js';
 import { Link } from 'react-router-dom';
 import { DatabaseCheck as DatabaseIcon } from 'react-bootstrap-icons';
+import { LoadingContext } from '../context/LoadingContext.js';
 
 
 
@@ -13,6 +12,7 @@ import { DatabaseCheck as DatabaseIcon } from 'react-bootstrap-icons';
 const Home = () => {
 
     const [selectedDate, setSelectedDate] = useState(new Date());
+    const { user } = useContext(LoadingContext);
 
     return (
         <div>
@@ -71,11 +71,14 @@ const Home = () => {
                     We have <span className='text-sky-400'>5, 000+ Locum Shifts</span> across Lagos, Nigeria
                 </p>
 
-                <Link to='/signup' className='grid grid-cols-1 md:grid-cols-3'>
-                    <div></div>
-                    <MyButton text='Get started' />
-                    <div></div>
-                </Link>
+                {
+                    user==null &&
+                    <Link to='/signup' className='grid grid-cols-1 md:grid-cols-3'>
+                        <div></div>
+                            <MyButton text='Get started' />
+                        <div></div>
+                    </Link>
+                }
 
             </div>
         </div>
