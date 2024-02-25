@@ -15,6 +15,7 @@ import ScrollToTop from './components/common/ScrollToTop';
 import Signup from './pages/Signup';
 import Dashboard from './pages/Dashboard';
 import EditProfile from './pages/EditProfile';
+import Footer from './components/common/Footer';
 
 
 
@@ -38,6 +39,7 @@ const App = () => {
               <Route path="/edit-profile" element={<EditProfile />} />
             </Routes>
           </div>
+          <Footer />
         </Router>
     </LoadingProvider>
   );
