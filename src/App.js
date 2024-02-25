@@ -1,35 +1,45 @@
-import logo from './logo.svg';
 import './App.css';
+import { LoadingProvider } from './context/LoadingContext';
 
 
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { useContext } from 'react';
 import Navbar from './components/common/Navbar';
 import Home from './pages/Home';
 import About from './pages/About';
 import FindShifts from './pages/FindShifts';
 import PostShifts from './pages/PostShifts';
-import UserProfile from './pages/UserProfile';
 import AccountSettings from './pages/AccountSettings';
 import Logout from './pages/Logout';
+import ScrollToTop from './components/common/ScrollToTop';
+import Signup from './pages/Signup';
+import Dashboard from './pages/Dashboard';
+import EditProfile from './pages/EditProfile';
 
 
 
 const App = () => {
+
   return (
-    <Router>
-      <div>
-        <Navbar />
-        <Switch>
-          <Route exact path="/" component={Home} />
-          <Route path="/about" component={About} />
-          <Route path="/find-shifts" component={FindShifts} />
-          <Route path="/post-shifts" component={PostShifts} />
-          <Route path="/user-profile" component={UserProfile} />
-          <Route path="/account-settings" component={AccountSettings} />
-          <Route path="/logout" component={Logout} />
-        </Switch>
-      </div>
-    </Router>
+    <LoadingProvider>
+         <Router>
+          <ScrollToTop />
+          <div className="pb-20 bg-slate-100 ">
+            <Navbar />
+            <Routes>
+              <Route exact path="/" element={<Home />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/find-shifts" element={<FindShifts />} />
+              <Route path="/post-shifts" element={<PostShifts />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/account-settings" element={<AccountSettings />} />
+              <Route path="/logout" element={<Logout />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/edit-profile" element={<EditProfile />} />
+            </Routes>
+          </div>
+        </Router>
+    </LoadingProvider>
   );
 };
 

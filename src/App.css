@@ -1,3 +1,33 @@
+
+body{
+  margin: 0;
+  font-family: 'Titillium Web', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  box-sizing: border-box;
+  padding: 0;
+}
+
+*:focus {
+  border-color: rgb(0, 114, 190) !important;
+  outline-color: rgb(0, 114, 190) !important;
+}
+
+
+form input, form select {
+  padding: 0.5rem;
+  border: 1px solid rgb(228, 228, 228);
+  border-radius: 5px;
+  margin: 5px;
+}
+
+
+
+
+
+
 .App {
   text-align: center;
 }
