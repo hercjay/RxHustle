@@ -100,8 +100,12 @@ class ShiftController {
                         shiftCreatorId: shift.pharmacistId,
                         shiftDate: shift.date,
                         shiftEndTime: shift.end,
+                        shiftStartTime: shift.start,
+                        shiftPlace: shift.place,
                         applicantId: user.id,
                         applicantEmail: user.email,
+                        applicantName: `${user.firstname} ${user.lastname}`,
+                        shiftLocation: shift.location,
                         status: 'pending',
                         createdAt: new Date(),
                     });
@@ -129,6 +133,50 @@ class ShiftController {
                     shiftDate.setHours(shiftEndTimeParts[0], shiftEndTimeParts[1]); 
                     const currentTime = new Date();
                     if (shiftDate >= currentTime) {
+                        //only show those whose status is pending
+                        if (doc.data().status === 'pending') {
+                            applications.push(doc.data());
+                        }
+                    }
+                }
+            });
+            return applications;
+        } catch (error) {
+            console.error('Error getting applications: ', error);
+            throw error;
+        }
+    }
+
+    // Get all approved applications for shifts I posted
+    async getApprovedApplicationsForMyShifts(user) {
+        try {
+            const applications = [];
+            const querySnapshot = await getDocs(query(collection(firestore, 'applications'), orderBy('createdAt', 'desc')));
+            querySnapshot.forEach((doc) => {
+                if (doc.data().shiftCreatorId === user.id) {
+                    //only show those whose status is approved
+                    if (doc.data().status === 'approved') {
+                        applications.push(doc.data());
+                    }
+                }
+            });
+            return applications;
+        } catch (error) {
+            console.error('Error getting applications: ', error);
+            throw error;
+        }
+    }
+
+
+    // get all rejected applications for shifts I posted
+    async getRejectedApplicationsForMyShifts(user) {
+        try {
+            const applications = [];
+            const querySnapshot = await getDocs(query(collection(firestore, 'applications'), orderBy('createdAt', 'desc')));
+            querySnapshot.forEach((doc) => {
+                if (doc.data().shiftCreatorId === user.id) {
+                    //only show those whose status is rejected
+                    if (doc.data().status === 'rejected') {
                         applications.push(doc.data());
                     }
                 }
