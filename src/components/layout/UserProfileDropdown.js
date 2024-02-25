@@ -56,10 +56,10 @@ const UserProfileDropdown = ({ user, count, setOpen }) => {
                 className="block w-full px-4 py-2 text-md text-gray-700 hover:bg-gray-100">
                 My Dashboard {count > 0 && <span className="text-white text-xs bg-red-500 px-2 rounded-sm">{count > 99 ? '99+' : count}</span>}
             </Link>
-            <Link to='/edit-profile' onClick={() => { setIsDropdownOpen(false); setOpen(false); }}
+            {/* <Link to='/edit-profile' onClick={() => { setIsDropdownOpen(false); setOpen(false); }}
                 className="block w-full px-4 py-2 text-md text-gray-700 hover:bg-gray-100">
                 Edit Profile
-            </Link>
+            </Link> */}
             <Link to='/logout' onClick={() => { setIsDropdownOpen(false); setOpen(false); }}
                 className="block w-full px-4 py-2 text-md text-gray-700 hover:bg-gray-100">
                 Logout
