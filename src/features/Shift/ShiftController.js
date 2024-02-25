@@ -63,6 +63,28 @@ class ShiftController {
         }
     }
 
+    //get all shifts from db with filters
+    async getShiftsByDateAndLocationFromRemoteDb (date, location) {
+        try {
+            const shifts = [];
+            const querySnapshot = await getDocs(query(collection(firestore, 'shifts'), orderBy('createdAt', 'desc')));
+            querySnapshot.forEach((doc) => {
+                if (doc.data().location === location) {
+                    if(date !== '' && date !== null && doc.data().date === date) {
+                        shifts.push(doc.data());
+                    } else if (date === '') {
+                        shifts.push(doc.data());
+                    }
+                }
+            });
+            return shifts;
+        } catch (error) {
+            console.error('Error getting shifts: ', error);
+            throw error;
+        }
+    }
+
+
     // Apply for a shift
     async applyForShift(shift, user) {
         try {

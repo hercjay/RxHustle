@@ -64,7 +64,7 @@ const ShiftCard = ({shift}) => {
                 <p className='text-sky-900 font-bold text-xl my-2 text-md group-hover:text-slate-200 duration-500'>
                     &#8358; {shift.rate} <span className=' text-sm '>/hour</span>
                 </p>
-                <p className='text-slate-500 text-md group-hover:text-slate-200 duration-500'>
+                <p className='text-slate-500 text-md group-hover:text-slate-200 duration-500 overflow-hidden whitespace-nowrap overflow-ellipsis'>
                     Total: &#8358;{total}
                 </p>
             </div>
