@@ -9,7 +9,7 @@ const { toastType, toastMessage, isShowToast, setIsShowToast } = useContext(Load
 useEffect(() => {
     const timeout = setTimeout(() => {
         setIsShowToast(false);
-    }, 2500);
+    }, 3000);
 
     return () => clearTimeout(timeout);
 }, []);
