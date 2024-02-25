@@ -7,7 +7,6 @@ import LoadingOverlay from './LoadingOverlay';
 import { LoadingContext } from '../../context/LoadingContext';
 import UserProfileDropdown from '../layout/UserProfileDropdown';
 import Toast from './Toast';
-import ShiftController from '../../features/Shift/ShiftController.js';
 
 
 
@@ -25,31 +24,14 @@ const  Navbar = () => {
     const { 
       isLoading, setIsLoading, user, setUser, isShowToast,
       seIsShowToast, toastType, setToastType, 
-      toastMessage, setToastMessage
+      toastMessage, setToastMessage, applicationsForMyShifts, 
+      setApplicationsForMyShifts
     } = useContext(LoadingContext);
     
 
     const pharmacistController = new PharmacistController();
     const [links, setLinks] = useState(defaultLinks);
-
-    const [ applicationsForMyShifts , setApplicationsForMyShifts ] = useState([]);
-    const shiftController = new ShiftController();
   
-    useEffect(() => {
-      if (user !== null) {
-        setIsLoading(true);
-        shiftController.getApplicationsForMyShifts(user).then((applications) => {
-          setApplicationsForMyShifts(applications);
-          setIsLoading(false);
-        }).catch((error) => {
-          setIsLoading(false);
-          setToastType('error');
-          setToastMessage('Error getting applications for my shifts. Try again later');
-          seIsShowToast(true);
-        });
-      }
-    }
-    , [user]);
 
     useEffect(() => {
       if(user === null) {
