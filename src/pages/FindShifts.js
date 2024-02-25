@@ -1,14 +1,39 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState, useContext, useEffect } from 'react'
 import MyButton from '../components/common/MyButton'
 import MyDatePicker from '../components/common/MyDatePicker'
 import ShiftCard from '../components/ShiftCard/ShiftCard'
 import { places } from '../constants/places'
-import {shifts} from '../constants/shifts'
+import ShiftController from '../features/Shift/ShiftController'
+import { LoadingContext } from '../context/LoadingContext'
+
 
 const FindShifts = () => {
 
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [shifts, setShifts] = useState([]);
+  const { 
+    isLoading, setIsLoading, isShowToast, setIsShowToast, 
+    toastType, setToastType, toastMessage, setToastMessage } = useContext(LoadingContext);
+
+  const shiftController = new ShiftController();
+  
+  useEffect(() => { 
+    setIsLoading(true);
+    shiftController.getAllShiftsFromRemoteDb().then((shifts) => {
+            setShifts(shifts);
+            setIsLoading(false);
+            setToastType('success');
+            setToastMessage('Shifts retrieved successfully');
+            setIsShowToast(true);
+        }).catch((error) => {
+            console.error('Error getting shifts: ', error);
+            setIsLoading(false);
+            setToastType('error');
+            setToastMessage('Error getting shifts from the database');
+            setIsShowToast(true);
+        }
+    );
+    }, []);
 
   return (
     <div className='bg-slate-100 px-5 md:px-20'>
@@ -34,7 +59,6 @@ const FindShifts = () => {
         </div>
 
         <div className='my-10 grid grid-cols-2 md:grid-cols-4 gap-4'>
-            {/* display only the first eith shifts */}
             {shifts.map((shift, index) => (
                 <ShiftCard key={index} shift={shift} />
             ))}
