@@ -191,7 +191,7 @@ const Dashboard = () => {
           Pending Applications To My Shifts
       </h2>
       <p className="text-sm font-normal text-slate-500">
-       { pendingCount <= 0 ? 'No pending applications to your shifts' : 'You have ' + pendingCount + ' pending applications to your shifts'} 
+       { pendingCount <= 0 ? 'No pending application(s) to your shifts' : 'You have ' + pendingCount + ' pending application(s) to your shifts'} 
       </p>
 
       <div className='grid mt-4 gap-2 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 bg-sky-100 p-4 rounded-lg'>
@@ -216,7 +216,7 @@ const Dashboard = () => {
           Approved Applications To My Shifts
       </h2>
       <p className="text-sm font-normal text-slate-500">
-       { approvedCount <= 0 ? 'You have approved no applications to your shifts' : 'You have approved ' + approvedCount + ' applications to your shifts'} 
+       { approvedCount <= 0 ? 'You have approved no applications to your shifts' : 'You have approved ' + approvedCount + ' application(s) to your shifts'} 
       </p>
 
       <div className='grid mt-4 gap-2 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 bg-sky-100 p-4 rounded-lg'>
@@ -241,7 +241,7 @@ const Dashboard = () => {
           Rejected Applications To My Shifts
       </h2>
       <p className="text-sm font-normal text-slate-500">
-       { rejectedCount <= 0 ? 'You have not rejected any applications to your shifts' : 'You have rejected ' + rejectedCount + ' applications to your shifts'} 
+       { rejectedCount <= 0 ? 'You have not rejected any applications to your shifts' : 'You have rejected ' + rejectedCount + ' application(s) to your shifts'} 
       </p>
 
       <div className='grid mt-4 gap-2 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 bg-sky-100 p-4 rounded-lg'>

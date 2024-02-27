@@ -76,9 +76,12 @@ const  Navbar = () => {
         </Link>
         
         <div className='text-3xl flex absolute right-8 top-5 cursor-pointer md:hidden'>
-          <Link to='/dashboard' className='flex items-center mr-2 justify-center text-xs text-center text-white bg-red-600 rounded-full w-6 h-6 mt-1'>
+          {
+            user !== null &&
+            <Link to='/dashboard' className='flex items-center mr-2 justify-center text-xs text-center text-white bg-red-600 rounded-full w-6 h-6 mt-1'>
               {applicationsForMyShifts.length > 99 ? '99+' : applicationsForMyShifts.length}
-          </Link>
+            </Link>
+          }
           {open ? <XIcon onClick={()=>setOpen(false)} /> : <ListIcon onClick={()=>setOpen(true)}/>}
         </div>
 
