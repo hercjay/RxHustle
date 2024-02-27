@@ -79,21 +79,27 @@ const FindShifts = () => {
                 The shift you need is just a search away!
             </h2>
 
-
+            <p>Filter Shift by:</p>
             <div className='bg-white rounded-lg p-4 grid grid-cols-1 md:grid-cols-3 gap-4 items-center'>
                 
                 {/* <MyDatePicker selectedDate={selectedDate} setSelectedDate={setSelectedDate} /> */}
-            
-                <input  onChange={handleChange} 
-                    className='w-full mb-2 md:mb-0 p-2 rounded border border-gray-300'
-                    type="date" id="date" name="date" value={formData.date} 
-                />
-                <select value={formData.location} onChange={handleChange} name="location"
-                     className='w-full mb-2 md:mb-0 p-2 rounded border border-gray-300'>
-                    {locations.map((location, index)=>(
-                        <option key={index} value={location}>{location}</option>
-                    ))}
-                </select>
+                <div>
+                    <label htmlFor="date">Date:</label>
+                    <input  onChange={handleChange} 
+                        className='w-full mb-2 md:mb-0 p-2 rounded border border-gray-300'
+                        type="date" id="date" name="date" value={formData.date} 
+                    />
+                </div>
+                
+                <div>
+                    <label htmlFor="location">Location:</label>
+                    <select value={formData.location} onChange={handleChange} name="location"
+                        className='w-full mb-2 md:mb-0 p-2 rounded border border-gray-300'>
+                        {locations.map((location, index)=>(
+                            <option key={index} value={location}>{location}</option>
+                        ))}
+                    </select>
+                </div>
                 
                 <div className='flex gap-4'>
                     <div onClick = { handleFilterShifts } >
