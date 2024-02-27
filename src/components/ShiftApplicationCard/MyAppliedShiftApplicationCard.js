@@ -22,6 +22,8 @@ const MyAppliedShiftApplicationCard = ({application, user, moveToRejected, moveT
                 <h2 className="text-xl font-bold text-sky-700">Shift Application</h2>
                 <p className="text-sm font-normal text-slate-500">Status: {application.status}</p>
             </div>
+            <p className="text-sm font-normal text-slate-500">Place: {application.shiftPlace}</p>
+            <p className="text-sm font-normal text-slate-500">Location: {application.shiftLocation}</p>
             <p className="text-sm font-normal text-slate-500">Shift Date: {application.shiftDate}</p>
             <p className="text-sm font-normal text-slate-500">Shift Start Time: {application.shiftStartTime}</p>
             <p className="text-sm font-normal text-slate-500">Shift End Time: {application.shiftEndTime}</p>
