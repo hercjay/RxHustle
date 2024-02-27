@@ -1,6 +1,6 @@
 import React,  { useContext, useEffect, useState } from 'react'
 import { LoadingContext } from '../context/LoadingContext';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import ShiftController from '../features/Shift/ShiftController';
 import ShiftApplicationCard from '../components/ShiftApplicationCard/ShiftApplicationCard';
 import ShiftCardWithAdmin from '../components/ShiftCard/ShiftCardWithAdmin';
@@ -24,6 +24,7 @@ const Dashboard = () => {
   const [ shiftsCount, setShiftsCount ] = useState(0);
 
   const shiftController = new ShiftController();
+  const navigate = useNavigate();
   
     useEffect(() => {
       if (user !== null) {
@@ -71,6 +72,8 @@ const Dashboard = () => {
           setToastMessage('Error getting shifts created by you. Try again later');
           setIsShowToast(true);
         });
+      } else {
+        navigate('/signup');
       }
     }
     , [user]);
