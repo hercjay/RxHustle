@@ -1,18 +1,44 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {shifts} from '../constants/shifts.js';
 import ShiftCard from '../components/ShiftCard/ShiftCard.js';
 import MyButton from '../components/common/MyButton.js';
 import { Link } from 'react-router-dom';
 import { DatabaseCheck as DatabaseIcon } from 'react-bootstrap-icons';
 import { LoadingContext } from '../context/LoadingContext.js';
-
+import TestimonialsCarousel from '../components/Testimonials/TestimonialsCarousel.js';
+import { testimonials } from '../constants/testimonials.js';
+import ShiftController from '../features/Shift/ShiftController.js';
 
 
 
 const Home = () => {
 
     const [selectedDate, setSelectedDate] = useState(new Date());
-    const { user } = useContext(LoadingContext);
+    const { 
+        user, setIsLoading, isLoading, setToastMessage, 
+        setToastType, setIsShowToast
+     } = useContext(LoadingContext);
+    const [shifts, setShifts] = useState([]);
+    const shiftController = new ShiftController();
+
+    useEffect(() => {
+        setIsLoading(true);
+    shiftController.getAllShiftsFromRemoteDb().then((shifts) => {
+            setShifts(shifts);
+            setIsLoading(false);
+            setToastType('success');
+            setToastMessage('Shifts retrieved successfully');
+            setIsShowToast(true);
+        }).catch((error) => {
+            console.error('Error getting shifts: ', error);
+            setIsLoading(false);
+            setToastType('error');
+            setToastMessage('Error getting shifts from the database');
+            setIsShowToast(true);
+        }
+    );
+    }, []);
+    
 
     return (
         <div>
@@ -81,6 +107,25 @@ const Home = () => {
                 }
 
             </div>
+
+
+
+            <div className=" pb-10 px-5 md:px-20">
+                    
+                <TestimonialsCarousel testimonials={testimonials} />
+
+                {
+                    user==null &&
+                    <Link to='/signup' className='grid py-8 grid-cols-1 md:grid-cols-3'>
+                        <div></div>
+                            <MyButton text='Get started' />
+                        <div></div>
+                    </Link>
+                }
+
+            </div>
+
+
         </div>
     )
 }
