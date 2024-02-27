@@ -25,21 +25,23 @@ const App = () => {
     <LoadingProvider>
          <Router>
           <ScrollToTop />
-          <div className="pb-20 bg-slate-100 ">
-            <Navbar />
-            <Routes>
-              <Route exact path="/" element={<Home />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/find-shifts" element={<FindShifts />} />
-              <Route path="/post-shifts" element={<PostShifts />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/account-settings" element={<AccountSettings />} />
-              <Route path="/logout" element={<Logout />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/edit-profile" element={<EditProfile />} />
-            </Routes>
+          <div className='flex flex-col min-h-screen justify-between'>
+            <div className="flex-grow">
+              <Navbar />
+              <Routes>
+                <Route exact path="/" element={<Home />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/find-shifts" element={<FindShifts />} />
+                <Route path="/post-shifts" element={<PostShifts />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/account-settings" element={<AccountSettings />} />
+                <Route path="/logout" element={<Logout />} />
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/edit-profile" element={<EditProfile />} />
+              </Routes>
+            </div>
+            <Footer />
           </div>
-          <Footer />
         </Router>
     </LoadingProvider>
   );
