@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Google as GoogleIcon } from 'react-bootstrap-icons';
 
@@ -12,6 +12,12 @@ const Signup = () => {
     const { user, setUser } = useContext(LoadingContext);
     const pharmacistController = new PharmacistController();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if(user) {
+            navigate('/dashboard');
+        }
+    }, [user]);
     
     const handleGoogleSignIn = async () => {
         try {

@@ -1,8 +1,9 @@
 import React,  { useContext, useEffect, useState } from 'react'
 import { LoadingContext } from '../context/LoadingContext';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import ShiftController from '../features/Shift/ShiftController';
 import ShiftApplicationCard from '../components/ShiftApplicationCard/ShiftApplicationCard';
+import MyAppliedShiftApplicationCard from '../components/ShiftApplicationCard/MyAppliedShiftApplicationCard';
 import ShiftCardWithAdmin from '../components/ShiftCard/ShiftCardWithAdmin';
 import MyTertiaryButton from '../components/common/MyTertiaryButton';
 
@@ -17,13 +18,17 @@ const Dashboard = () => {
 
   const [ approvedShiftApplications , setApprovedShiftApplications ] = useState([]);
   const [ rejectedShiftApplications , setRejectedShiftApplications ] = useState([]);
+  const [ appliedShifts, setAppliedShifts ] = useState([]);
+  const [ appliedCount, setAppliedCount ] = useState(0);
   const [ pendingCount, setPendingCount ] = useState(0);
   const [ approvedCount, setApprovedCount ] = useState(0);
   const [ rejectedCount, setRejectedCount ] = useState(0);
   const [ shiftsCreatedByMe, setShiftsCreatedByMe ] = useState([]);
   const [ shiftsCount, setShiftsCount ] = useState(0);
+  
 
   const shiftController = new ShiftController();
+  const navigate = useNavigate();
   
     useEffect(() => {
       if (user !== null) {
@@ -71,6 +76,20 @@ const Dashboard = () => {
           setToastMessage('Error getting shifts created by you. Try again later');
           setIsShowToast(true);
         });
+
+        setIsLoading(true);
+        shiftController.getShiftsAppliedForByUser(user).then((applications) => {
+          setAppliedShifts(applications);
+          setIsLoading(false);
+        }).catch((error) => {
+          setIsLoading(false);
+          setToastType('error');
+          setToastMessage('Error getting shifts you applied for. Try again later');
+          setIsShowToast(true);
+        });
+
+      } else {
+        navigate('/signup');
       }
     }
     , [user]);
@@ -115,6 +134,11 @@ const Dashboard = () => {
     }
     , [shiftsCreatedByMe]);
 
+    useEffect(() => {
+      setAppliedCount(appliedShifts.length);
+    }
+    , [appliedShifts]);
+
 
 
 
@@ -132,6 +156,33 @@ const Dashboard = () => {
       <p className="text-lg text-black text-start pb-2">
           Hello, Pharm. {user?.firstname} {user?.lastname}
       </p>
+
+
+      {/*  SHIFTS I APPLIED FOR */}
+      <h2 className="font-bold mt-8 text-2xl text-sky-700">
+          Shifts I Applied For
+      </h2>
+      <p className="text-sm font-normal text-slate-500">
+       { appliedCount <= 0 ? 'You have not applied to any shifts' : 'You have applied to ' + appliedCount + '  shifts'} 
+      </p>
+
+      <div className='w-full mb-8 overflow-x-auto flex gap-4 m-4 bg-sky-100 p-4 rounded-lg'>
+        {
+          appliedShifts.map((application, index) => {
+            const color = application.status === 'approved' ? 'bg-green-500' : application.status === 'rejected' ? 'bg-red-500' : 'bg-yellow-500';
+            const shadowColor = application.status === 'approved' ? 'shadow-green-300' : application.status === 'rejected' ? 'shadow-red-300' : 'shadow-yellow-300';
+            return (
+              <div className={ `shadow-lg min-w-[60vw]  md:min-w-[40vw] lg:min-w-[20vw] rounded-lg p-2 ${color} ${shadowColor}`}>
+                  <MyAppliedShiftApplicationCard user={user} key={index} 
+                    application = {application} moveToApproved={() => moveToApproved(application)}
+                    moveToRejected={() => moveToRejected(application)}
+                    isPending={false}
+                  />
+              </div>
+            )
+          })
+        }
+      </div>
 
 
 
@@ -232,7 +283,6 @@ const Dashboard = () => {
           })
         }
       </div>
-
 
 
 

@@ -153,6 +153,25 @@ class ShiftController {
     }
 
 
+    //Get shifts applied for by a specific user
+    async getShiftsAppliedForByUser(user) {
+        try {
+            const applications = [];
+            const querySnapshot = await getDocs(query(collection(firestore, 'applications'), orderBy('createdAt', 'desc')));
+            querySnapshot.forEach((doc) => {
+                if (doc.data().applicantId === user.id) {
+                    applications.push(doc.data());
+                }
+            });
+            return applications;
+        } catch (error) {
+            console.error('Error getting shift applications by a user: ', error);
+            throw error;
+        }
+    }
+
+
+
     // Get all applications for shifts I posted that are not expired
     async getApplicationsForMyShifts(user) {
         try {
