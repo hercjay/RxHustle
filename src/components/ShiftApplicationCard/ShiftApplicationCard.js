@@ -67,7 +67,7 @@ const ShiftApplicationCard = ({application, user, moveToRejected, moveToApproved
 
   return (
     <div>
-        <div className="bg-white shadow-md rounded-lg p-4">
+        <div className="bg-white shadow-md rounded-lg p-4 w-full">
             <div className="flex justify-between items-center">
                 <h2 className="text-xl font-bold text-sky-700">Shift Application</h2>
                 <p className="text-sm font-normal text-slate-500">Status: {application.status}</p>
