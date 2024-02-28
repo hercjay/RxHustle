@@ -4,11 +4,13 @@ RxHustle is a platform designed to streamline and simplify the process of connec
 
 ##Key Features:
 
-Job Listings: Pharmacists can explore and apply for locum opportunities based on location, duration, and pay rates.
-Profile Creation: Create a detailed profile showcasing your skills, availability, and work preferences.
-Location-Based Matching: Find the right candidates or opportunities in specific locations.
-Real-time Communication: Seamless communication between pharmacists and pharmacy owners through the platform.
-Availability Calendar: Easily manage and display your availability for locum shifts.
+Google Authentication: Enable users to sign in securely using Google authentication.
+Shift Management: Create, filter, and manage shifts with ease using the Shift model and controller.
+Dashboard: Access a personalized dashboard to view shift information specific to each user.
+Notifications Badge: Stay informed with a badge indicating pending shift applications.
+Application Management: Approve, reject, and email applicants for pending shifts directly from the platform.
+Logout Functionality: Securely log out of your account when done using the platform.
+Custom Alerts and Loading Dialogs: Enhanced user experience with custom-designed alerts and loading dialogs.
 
 
 ##Tech Stack:
@@ -16,10 +18,12 @@ Availability Calendar: Easily manage and display your availability for locum shi
 Frontend: Built with React for a responsive and dynamic user interface.
 Backend: Firebase powers the backend, offering a scalable and reliable solution.
 Authentication: Firebase Authentication ensures secure and straightforward user authentication.
-Real-time Database: Firebase Realtime Database for efficient data storage and retrieval.
+Database: Firebase Firestore Database for efficient data storage and retrieval.
 
 
 #Getting Started:
+
+To get started with RxHustle, follow these steps:
 
 Clone the repository.
 Install dependencies using npm install.
