@@ -36,3 +36,14 @@ Contributions are welcome! Whether you're a developer, designer, or have ideas f
 
 Let's revolutionize the way pharmacists connect with locum opportunities. Happy coding!
 
+
+![Screenshot 2024-02-28 113410](https://github.com/hercjay/RxHustle/assets/112480000/202b8746-195a-4836-9023-9e212565ba82)
+![Screenshot 2024-02-28 113201](https://github.com/hercjay/RxHustle/assets/112480000/5a4afbfd-5909-4011-9d90-fb3da0058cb2)
+![Screenshot 2024-03-02 093943](https://github.com/hercjay/RxHustle/assets/112480000/827f4599-dd82-4054-859d-82746a633aa7)
+![Screenshot 2024-03-02 093911](https://github.com/hercjay/RxHustle/assets/112480000/00d470c0-8fb6-44c4-812e-c0a5834ca2be)
+![Screenshot 2024-03-02 093810](https://github.com/hercjay/RxHustle/assets/112480000/b63483d9-caaa-49a7-8f95-8a145dcda165)
+![Screenshot 2024-03-02 093750](https://github.com/hercjay/RxHustle/assets/112480000/396b88fd-d56b-46d0-b976-353eeeaed7b9)
+
+
+
+
